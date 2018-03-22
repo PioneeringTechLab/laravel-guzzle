@@ -1,2 +1,2 @@
-# laravel-guzzle-helper
-Composer package for Laravel 5.0 and above to provide a simple way of interfacing with Guzzle
+# laravel-guzzle
+Composer package for Laravel 5.0 and above that provides a consistent method of interacting with Guzzle.
