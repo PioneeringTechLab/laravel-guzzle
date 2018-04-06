@@ -266,6 +266,80 @@ class HandlerGuzzle
 	}
 
 	/**
+	 * Sets the body data of a request. This works differently depending on
+	 * the Guzzle version that is used.
+	 *
+	 * @param mixed $data The body data to set
+	 */
+	public function setBody($data) {
+		$this->request_options['body'] = $data;
+	}
+
+	/**
+	 * Sets the request body data of an application/x-www-form-urlencoded request.
+	 *
+	 * @param array $data The array of data to set as the request body
+	 */
+	public function setFormBody($data) {
+		// check whether there is a request() method present to determine
+		// the Guzzle capabilities and what array key to set
+		if(method_exists($this->client, 'request')) {
+			$this->request_options['form_params'] = $data;
+		}
+		else
+		{
+			$this->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+			$this->setBody($data);
+		}
+	}
+
+	/**
+	 * Sets a request header with the given key and value.
+	 *
+	 * @param string $key The key of the header
+	 * @param string $value The value of the header
+	 */
+	public function setHeader($key, $value) {
+		$this->request_options['headers'][$key] = $value;
+	}
+
+	/**
+	 * Sets the request body data of an application/json request.
+	 *
+	 * @param array $data The array of data to set as the request body
+	 */
+	public function setJsonBody($data) {
+		// check whether there is a request() method present to determine
+		// the Guzzle capabilities and what array key to set
+		if(method_exists($this->client, 'request')) {
+			$this->request_options['json'] = $data;
+		}
+		else
+		{
+			$this->setHeader('Content-Type', 'application/json');
+			$this->setBody($data);
+		}
+	}
+
+	/**
+	 * Sets the request body data of a multipart/form-data request.
+	 *
+	 * @param array $data The array of data to set as the request body
+	 */
+	public function setMultipartBody($data) {
+		// check whether there is a request() method present to determine
+		// the Guzzle capabilities and what array key to set
+		if(method_exists($this->client, 'request')) {
+			$this->request_options['multipart'] = $data;
+		}
+		else
+		{
+			$this->setHeader('Content-Type', 'multipart/form-data');
+			$this->setBody($data);
+		}
+	}
+
+	/**
 	 * Sets a request option prior to a request.
 	 *
 	 * @param string $key The key of the option
