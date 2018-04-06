@@ -61,6 +61,14 @@ There are currently no required environment variables but there are [optional en
 
 ## Optional Environment Variables
 
+### GUZZLE_BASE_URI
+
+This is the base URI that will be used for all default Guzzle requests. This value is only consulted when resolving a `HandlerGuzzle` instance from the `HandlerGuzzleFactory` class.
+
+It will not affect `HandlerGuzzle` objects that have been instantiated directly.
+
+Default is `null`.
+
 ### GUZZLE_VERIFY_CERT
 
 Should Guzzle verify the server certificate during HTTPS requests? This typically requires the CA cert of the server's chain to be installed on the machine performing the Guzzle request.

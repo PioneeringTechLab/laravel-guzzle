@@ -2,6 +2,21 @@
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Base URI for all default Guzzle requests
+    |--------------------------------------------------------------------------
+    |
+    | This is the base URI that will be used for all default Guzzle requests.
+    | This value is only consulted when resolving a HandlerGuzzle instance from
+    | the HandlerGuzzleFactory class. It will not affect HandlerGuzzle objects
+    | that have been instantiated directly.
+    |
+    | Default is null.
+    |
+    */
+    'base_uri' => env("GUZZLE_BASE_URI", null),
+
 	/*
     |--------------------------------------------------------------------------
     | Should Guzzle verify the server certificate for HTTPS requests?
