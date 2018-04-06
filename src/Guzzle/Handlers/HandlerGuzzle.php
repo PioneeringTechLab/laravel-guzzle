@@ -41,6 +41,32 @@ class HandlerGuzzle
 	}
 
 	/**
+	 * Convenience method to clear the authentication credentials and method
+	 * used in the request. Returns whether the authentication options were
+	 * cleared successfully.
+	 *
+	 * @return bool
+	 */
+	public function clearAuth() {
+		return $this->clearRequestOption('auth');
+	}
+
+	/**
+	 * Clears a request option if it exists. Returns whether the option was
+	 * cleared successfully.
+	 *
+	 * @param string $key The key of the option to clear
+	 * @return bool
+	 */
+	public function clearRequestOption($key) {
+		if(array_key_exists($key, $this->request_options)) {
+			unset($this->request_options[$key]);
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Returns the Guzzle client instance.
 	 *
 	 * @return \GuzzleHttp\Client
