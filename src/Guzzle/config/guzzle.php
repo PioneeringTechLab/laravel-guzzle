@@ -4,6 +4,32 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Authentication credentials for all default Guzzle requests
+    |--------------------------------------------------------------------------
+    |
+    | These are the authentication credentials that will be used for all
+    | default Guzzle requests. These values will only be consulted when
+    | resolving a HandlerGuzzle instance from the HandlerGuzzleFactory class.
+    | It will not affect HandlerGuzzle objects that have been instantiated
+    | directly.
+    |
+    | If either the username or password have been provided and are non-empty
+    | then the authentication credentials will be set.
+    |
+    */
+    'auth' => [
+
+        'username' => env("GUZZLE_AUTH_USERNAME", null),
+
+        'password' => env("GUZZLE_AUTH_PASSWORD", null),
+
+        // use HTTP Basic Authentication if the method has not been specified
+        'method' => env("GUZZLE_AUTH_METHOD", null),
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Base URI for all default Guzzle requests
     |--------------------------------------------------------------------------
     |

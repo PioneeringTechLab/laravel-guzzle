@@ -72,12 +72,17 @@ class HandlerGuzzle
 	 *
 	 * @param string $username The authentication username
 	 * @param string $password The authentication password
+	 * @param string $method Optional authentication method string
 	 */
-	public function setAuth($username, $password) {
+	public function setAuth($username, $password, $method=null) {
 		$this->request_options['auth'] => [
-			'username' => $username,
-			'password' => $password,
+			$username,
+			$password,
 		];
+
+		if(!empty($method)) {
+			$this->request_options['auth'][] = $method;
+		}
 	}
 
 	/**
