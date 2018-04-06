@@ -94,7 +94,18 @@ class HandlerGuzzle
 	 * @throws GuzzleHttp\Exception\RequestException
 	 */
 	public function executeRequest($method, $uri) {
-		$response = $this->client->request($method, $uri, $this->request_options);
+		// we have to take the Guzzle version into account here; the 6.x series
+		// has the request() method whereas the 5.x series only has magic
+		// methods based upon the HTTP request verb so we will need to create
+		// a request explicitly to leverage equivalent functionality
+		if(method_exists($this->client, 'request')) {
+			$response = $this->client->request($method, $uri, $this->request_options);
+		}
+		else
+		{
+			$request = $this->client->createRequest($method, $uri, $this->request_options);
+			$response = $this->client->send($request);
+		}
 		return $response;
 	}
 
