@@ -24,22 +24,18 @@ class HandlerGuzzleFactory
 			'verify' => config('guzzle.verify_cert'),
 		];
 
+		$handler = new HandlerGuzzle($client_options, $request_options);
+
 		// if we have authentication options, set those too
 		$username = config('guzzle.auth.username');
 		$password = config('guzzle.auth.password');
 		$method = config('guzzle.auth.method');
 
-		// set the creds and optionally the method
+		// set the creds and the authentication method
 		if(!empty($username) || !empty($password)) {
-			$request_options['auth'] => [
-				$username,
-				$password,
-			];
-			if(!empty($method)) {
-				$request_options['auth'][] = $method;
-			}
+			$handler->setAuth($username, $password, $method);
 		}
 
-		return new HandlerGuzzle($client_options, $request_options);
+		return $handler;
 	}
 }
