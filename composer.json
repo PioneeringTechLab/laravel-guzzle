@@ -1,0 +1,24 @@
+{
+    "name": "csun-metalab/laravel-guzzle",
+    "description": "Composer package for Laravel 5.0 and above that provides a consistent method of interacting with Guzzle.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matthew Fritz",
+            "email": "mattf@burbankparanormal.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "classmap": [
+            "src/Guzzle/"
+        ],
+        "psr-4": {
+            "CSUNMetaLab\\Guzzle\\": "src/Guzzle/"
+        }
+    }
+}
