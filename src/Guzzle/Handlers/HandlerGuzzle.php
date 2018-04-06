@@ -41,6 +41,20 @@ class HandlerGuzzle
 	}
 
 	/**
+	 * Clears all request headers if any exist. Returns whether the headers
+	 * were cleared successfully.
+	 *
+	 * @return bool
+	 */
+	public function clearAllHeaders() {
+		if(array_key_exists('headers', $this->request_options)) {
+			unset($this->request_options['headers']);
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Convenience method to clear the authentication credentials and method
 	 * used in the request. Returns whether the authentication options were
 	 * cleared successfully.
@@ -49,6 +63,23 @@ class HandlerGuzzle
 	 */
 	public function clearAuth() {
 		return $this->clearRequestOption('auth');
+	}
+
+	/**
+	 * Clears a request header if it exists. Returns whether the header was
+	 * cleared successfully.
+	 *
+	 * @param string $key The key of the header to clear
+	 * @return bool
+	 */
+	public function clearHeader($key) {
+		if(array_key_exists('headers', $this->request_options)) {
+			if(array_key_exists($key, $this->request_options['headers'])) {
+				unset($this->request_options['headers'][$key]);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -69,8 +100,7 @@ class HandlerGuzzle
 	/**
 	 * Executes a DELETE request with the specified URI. All request options that
 	 * have already been set will be used. Throws a RequestException if something
-	 * went wrong with the request. Returns the response body with a type
-	 * depending on the type of response format requested.
+	 * went wrong with the request. Returns the Guzzle response instance.
 	 *
 	 * @param string $uri The URI endpoint
 	 *
@@ -112,8 +142,7 @@ class HandlerGuzzle
 	/**
 	 * Executes a GET request with the specified URI. All request options that
 	 * have already been set will be used. Throws a RequestException if something
-	 * went wrong with the request. Returns the response body with a type
-	 * depending on the type of response format requested.
+	 * went wrong with the request. Returns the Guzzle response instance.
 	 *
 	 * @param string $uri The URI endpoint
 	 *
@@ -154,8 +183,7 @@ class HandlerGuzzle
 	/**
 	 * Executes a HEAD request with the specified URI. All request options that
 	 * have already been set will be used. Throws a RequestException if something
-	 * went wrong with the request. Returns the response body with a type
-	 * depending on the type of response format requested.
+	 * went wrong with the request. Returns the Guzzle response instance.
 	 *
 	 * @param string $uri The URI endpoint
 	 *
@@ -169,8 +197,7 @@ class HandlerGuzzle
 	/**
 	 * Executes a OPTIONS request with the specified URI. All request options that
 	 * have already been set will be used. Throws a RequestException if something
-	 * went wrong with the request. Returns the response body with a type
-	 * depending on the type of response format requested.
+	 * went wrong with the request. Returns the Guzzle response instance.
 	 *
 	 * @param string $uri The URI endpoint
 	 *
@@ -184,8 +211,7 @@ class HandlerGuzzle
 	/**
 	 * Executes a PATCH request with the specified URI. All request options that
 	 * have already been set will be used. Throws a RequestException if something
-	 * went wrong with the request. Returns the response body with a type
-	 * depending on the type of response format requested.
+	 * went wrong with the request. Returns the Guzzle response instance.
 	 *
 	 * @param string $uri The URI endpoint
 	 *
@@ -199,8 +225,7 @@ class HandlerGuzzle
 	/**
 	 * Executes a POST request with the specified URI. All request options that
 	 * have already been set will be used. Throws a RequestException if something
-	 * went wrong with the request. Returns the response body with a type
-	 * depending on the type of response format requested.
+	 * went wrong with the request. Returns the Guzzle response instance.
 	 *
 	 * @param string $uri The URI endpoint
 	 *
@@ -214,8 +239,7 @@ class HandlerGuzzle
 	/**
 	 * Executes a PUT request with the specified URI. All request options that
 	 * have already been set will be used. Throws a RequestException if something
-	 * went wrong with the request. Returns the response body with a type
-	 * depending on the type of response format requested.
+	 * went wrong with the request. Returns the Guzzle response instance.
 	 *
 	 * @param string $uri The URI endpoint
 	 *
@@ -269,7 +293,11 @@ class HandlerGuzzle
 	 * Sets the body data of a request. This works differently depending on
 	 * the Guzzle version that is used.
 	 *
+	 * In Guzzle 5.x, this can be used to set form data as the body. In Guzzle
+	 * 6.x, this can only be used to set regular text or stream data.
+	 *
 	 * @param mixed $data The body data to set
+	 * @see https://github.com/guzzle/guzzle/blob/master/UPGRADING.md#post-requests
 	 */
 	public function setBody($data) {
 		$this->request_options['body'] = $data;
@@ -288,7 +316,8 @@ class HandlerGuzzle
 		}
 		else
 		{
-			$this->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+			// set the Content-Type header but don't replace it
+			$this->setHeader('Content-Type', 'application/x-www-form-urlencoded', false);
 			$this->setBody($data);
 		}
 	}
@@ -297,10 +326,29 @@ class HandlerGuzzle
 	 * Sets a request header with the given key and value.
 	 *
 	 * @param string $key The key of the header
-	 * @param string $value The value of the header
+	 * @param mixed $value The value of the header
+	 * @param bool $replace Whether to replace the existing header. Defaults to true.
 	 */
-	public function setHeader($key, $value) {
-		$this->request_options['headers'][$key] = $value;
+	public function setHeader($key, $value, $replace=true) {
+		if(array_key_exists('headers', $this->request_options)) {
+			if(array_key_exists($key, $this->request_options['headers']))
+				if($replace) {
+					// header exists and we want to replace it
+					$this->request_options['headers'][$key] = $value;
+				}
+			}
+			else
+			{
+				// header does not yet exist, so create it
+				$this->request_options['headers'][$key] = $value;
+			}
+		}
+		else
+		{
+			// no custom request headers yet, so create the headers array and add
+			// the custom header to it
+			$this->request_options['headers'][$key] = $value;
+		}
 	}
 
 	/**
@@ -316,7 +364,8 @@ class HandlerGuzzle
 		}
 		else
 		{
-			$this->setHeader('Content-Type', 'application/json');
+			// set the Content-Type header but don't replace it
+			$this->setHeader('Content-Type', 'application/json', false);
 			$this->setBody($data);
 		}
 	}
@@ -334,7 +383,8 @@ class HandlerGuzzle
 		}
 		else
 		{
-			$this->setHeader('Content-Type', 'multipart/form-data');
+			// set the Content-Type header but don't replace it
+			$this->setHeader('Content-Type', 'multipart/form-data', false);
 			$this->setBody($data);
 		}
 	}
