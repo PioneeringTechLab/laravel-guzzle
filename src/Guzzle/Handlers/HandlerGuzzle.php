@@ -67,6 +67,53 @@ class HandlerGuzzle
 	}
 
 	/**
+	 * Executes a DELETE request with the specified URI. All request options that
+	 * have already been set will be used. Throws a RequestException if something
+	 * went wrong with the request. Returns the response body with a type
+	 * depending on the type of response format requested.
+	 *
+	 * @param string $uri The URI endpoint
+	 *
+	 * @return mixed
+	 * @throws GuzzleHttp\Exception\RequestException
+	 */
+	public function delete($uri) {
+		return $this->executeRequest('DELETE', $uri);
+	}
+
+	/**
+	 * Executes a Guzzle request with the specified HTTP method and URI. All
+	 * request options that have already been set will be used here. Throws a
+	 * RequestException if something went wrong with the request. Returns the
+	 * Guzzle response instance.
+	 *
+	 * @param string $method The HTTP method to use
+	 * @param string $uri The URI endpoint
+	 *
+	 * @return mixed
+	 * @throws GuzzleHttp\Exception\RequestException
+	 */
+	public function executeRequest($method, $uri) {
+		$response = $this->client->request($method, $uri, $this->request_options);
+		return $response;
+	}
+
+	/**
+	 * Executes a GET request with the specified URI. All request options that
+	 * have already been set will be used. Throws a RequestException if something
+	 * went wrong with the request. Returns the response body with a type
+	 * depending on the type of response format requested.
+	 *
+	 * @param string $uri The URI endpoint
+	 *
+	 * @return mixed
+	 * @throws GuzzleHttp\Exception\RequestException
+	 */
+	public function get($uri) {
+		return $this->executeRequest('GET', $uri);
+	}
+
+	/**
 	 * Returns the Guzzle client instance.
 	 *
 	 * @return \GuzzleHttp\Client
@@ -91,6 +138,102 @@ class HandlerGuzzle
 	 */
 	public function getRequestOptions() {
 		return $this->request_options;
+	}
+
+	/**
+	 * Executes a HEAD request with the specified URI. All request options that
+	 * have already been set will be used. Throws a RequestException if something
+	 * went wrong with the request. Returns the response body with a type
+	 * depending on the type of response format requested.
+	 *
+	 * @param string $uri The URI endpoint
+	 *
+	 * @return mixed
+	 * @throws GuzzleHttp\Exception\RequestException
+	 */
+	public function head($uri) {
+		return $this->executeRequest('HEAD', $uri);
+	}
+
+	/**
+	 * Executes a OPTIONS request with the specified URI. All request options that
+	 * have already been set will be used. Throws a RequestException if something
+	 * went wrong with the request. Returns the response body with a type
+	 * depending on the type of response format requested.
+	 *
+	 * @param string $uri The URI endpoint
+	 *
+	 * @return mixed
+	 * @throws GuzzleHttp\Exception\RequestException
+	 */
+	public function options($uri) {
+		return $this->executeRequest('OPTIONS', $uri);
+	}
+
+	/**
+	 * Executes a PATCH request with the specified URI. All request options that
+	 * have already been set will be used. Throws a RequestException if something
+	 * went wrong with the request. Returns the response body with a type
+	 * depending on the type of response format requested.
+	 *
+	 * @param string $uri The URI endpoint
+	 *
+	 * @return mixed
+	 * @throws GuzzleHttp\Exception\RequestException
+	 */
+	public function patch($uri) {
+		return $this->executeRequest('PATCH', $uri);
+	}
+
+	/**
+	 * Executes a POST request with the specified URI. All request options that
+	 * have already been set will be used. Throws a RequestException if something
+	 * went wrong with the request. Returns the response body with a type
+	 * depending on the type of response format requested.
+	 *
+	 * @param string $uri The URI endpoint
+	 *
+	 * @return mixed
+	 * @throws GuzzleHttp\Exception\RequestException
+	 */
+	public function post($uri) {
+		return $this->executeRequest('POST', $uri);
+	}
+
+	/**
+	 * Executes a PUT request with the specified URI. All request options that
+	 * have already been set will be used. Throws a RequestException if something
+	 * went wrong with the request. Returns the response body with a type
+	 * depending on the type of response format requested.
+	 *
+	 * @param string $uri The URI endpoint
+	 *
+	 * @return mixed
+	 * @throws GuzzleHttp\Exception\RequestException
+	 */
+	public function put($uri) {
+		return $this->executeRequest('PUT', $uri);
+	}
+
+	/**
+	 * Resolves the body of a Guzzle response in the specified format. If the
+	 * format is "json" then the body will be passed through json_decode()
+	 * before being returned. Otherwise, the body (typically a stream) will be
+	 * returned directly without modification.
+	 *
+	 * @param mixed $response The Guzzle response instance
+	 * @param string $format Optional format (either null or "json")
+	 *
+	 * @return mixed
+	 */
+	public function resolveResponseBody($response, $format=null) {
+		$body = $response->getBody();
+
+		if($format == 'json') {
+			return json_decode($body);
+		}
+
+		return $body;
 	}
 
 	/**
