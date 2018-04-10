@@ -296,8 +296,15 @@ class HandlerGuzzle
 	 * In Guzzle 5.x, this can be used to set form data as the body. In Guzzle
 	 * 6.x, this can only be used to set regular text or stream data.
 	 *
+	 * For form, JSON, or multipart data, please use the respective methods in
+	 * order to be safe.
+	 *
 	 * @param mixed $data The body data to set
 	 * @see https://github.com/guzzle/guzzle/blob/master/UPGRADING.md#post-requests
+	 *
+	 * @see HandlerGuzzle#setFormBody
+	 * @see HandlerGuzzle#setJsonBody
+	 * @see HandlerGuzzle#setMultipartData
 	 */
 	public function setBody($data) {
 		$this->request_options['body'] = $data;
