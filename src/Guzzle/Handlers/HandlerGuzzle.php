@@ -123,7 +123,7 @@ class HandlerGuzzle
 	 * @return mixed
 	 * @throws GuzzleHttp\Exception\RequestException
 	 */
-	protected function executeRequest($method, $uri) {
+	public function executeRequest($method, $uri) {
 		// we have to take the Guzzle version into account here; the 6.x series
 		// has the request() method whereas the 5.x series only has magic
 		// methods based upon the HTTP request verb so we will need to create
