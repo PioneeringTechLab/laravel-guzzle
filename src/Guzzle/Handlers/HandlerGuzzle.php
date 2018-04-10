@@ -420,7 +420,7 @@ class HandlerGuzzle
 	/**
 	 * Magic method to make requests via instance method syntax. Returns the
 	 * Guzzle response via the executeRequest() method. Throws an instance of
-	 * InvalidArgumentException if no arguments have been provided.
+	 * BadMethodCallException if no arguments have been provided.
 	 *
 	 * @param string $name The name of the HTTP method to use
 	 * @param array $arguments Array of arguements; only the first will be used
@@ -428,7 +428,7 @@ class HandlerGuzzle
 	 * @return mixed
 	 *
 	 * @throws GuzzleHttp\Exception\RequestException
-	 * @throws InvalidArgumentException
+	 * @throws BadMethodCallException
 	 */
 	public function __call($name, $arguments) {
 		$method = strtoupper($name);
@@ -436,7 +436,7 @@ class HandlerGuzzle
 			return $this->executeRequest($method, $arguments[0]);
 		}
 
-		throw new \InvalidArgumentException(
+		throw new \BadMethodCallException(
 			'You must provide a URI argument in your call to ' . $name . '()'
 		);
 	}
