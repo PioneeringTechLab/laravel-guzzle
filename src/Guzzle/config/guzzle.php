@@ -43,6 +43,24 @@ return [
     */
     'base_uri' => env("GUZZLE_BASE_URI", null),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Should Guzzle return a JSON response body as an associative array?
+    |--------------------------------------------------------------------------
+    |
+    | Should Guzzle return a JSON response body as an associative array when
+    | using the resolveResponseBody() method in HandlerGuzzle?
+    | 
+    | The default in Guzzle 5.x was to return a response body as an associative
+    | array using the json() response method. Guzzle 6.x does not have a json()
+    | response method so this can be set to true in order to maintain the
+    | original functionality.
+    |
+    | Default is false (i.e. return the JSON response as a StdClass instance).
+    |
+    */
+    'json_assoc_array' => env("GUZZLE_JSON_ASSOC_ARRAY", false),
+
 	/*
     |--------------------------------------------------------------------------
     | Should Guzzle verify the server certificate for HTTPS requests?

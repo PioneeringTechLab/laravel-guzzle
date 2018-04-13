@@ -108,6 +108,14 @@ Default is `null`.
 
 ### Other Request Options
 
+#### GUZZLE_JSON_ASSOC_ARRAY
+
+Should Guzzle return a JSON response body as an associative array when using the `resolveResponseBody()` method in `HandlerGuzzle`?
+
+The default in Guzzle 5.x was to return a response body as an associative array when using the `json()` response method. Guzzle 6.x does not have a `json()` response method so this can be set to true in order to maintain the original functionality.
+
+Default is `false` (i.e. return the JSON response as a `StdClass` instance).
+
 #### GUZZLE_VERIFY_CERT
 
 Should Guzzle verify the server certificate during HTTPS requests? This typically requires the CA cert of the server's chain to be installed on the machine performing the Guzzle request.

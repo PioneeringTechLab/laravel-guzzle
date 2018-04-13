@@ -265,7 +265,8 @@ class HandlerGuzzle
 		$body = $response->getBody();
 
 		if($format == 'json') {
-			return json_decode($body);
+			$assoc = config('guzzle.json_assoc_array', false);
+			return json_decode($body, $assoc);
 		}
 
 		return $body;
