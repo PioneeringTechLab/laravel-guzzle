@@ -1,6 +1,6 @@
 <?php
 
-namespace CSUNMetaLab\Guzzle\Handlers\HandlerGuzzle;
+namespace CSUNMetaLab\Guzzle\Handlers;
 
 use GuzzleHttp\Client;
 
@@ -339,7 +339,7 @@ class HandlerGuzzle
 	 */
 	public function setHeader($key, $value, $replace=true) {
 		if(array_key_exists('headers', $this->request_options)) {
-			if(array_key_exists($key, $this->request_options['headers']))
+			if(array_key_exists($key, $this->request_options['headers'])) {
 				if($replace) {
 					// header exists and we want to replace it
 					$this->request_options['headers'][$key] = $value;
