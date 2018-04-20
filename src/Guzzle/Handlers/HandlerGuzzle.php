@@ -280,7 +280,7 @@ class HandlerGuzzle
 	 * @param string $method Optional authentication method string
 	 */
 	public function setAuth($username, $password, $method=null) {
-		$this->request_options['auth'] => [
+		$this->request_options['auth'] = [
 			$username,
 			$password,
 		];
