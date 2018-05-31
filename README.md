@@ -23,7 +23,13 @@ This package is intended to be used to interact with JSON web services but it ca
 
 #### Composer
 
-To install from Composer, use the following command:
+**NOTE:** If your Laravel version is above 5.4, Guzzle may not be included by default. Check your `vendor` directory to verify. If you do not have a Guzzle dependency, run this command first:
+
+```
+composer require guzzlehttp/guzzle:~6.0
+```
+
+To install this package from Composer, use the following command:
 
 ```
 composer require csun-metalab/laravel-guzzle
